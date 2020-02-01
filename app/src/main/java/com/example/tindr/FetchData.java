@@ -26,7 +26,7 @@ public class FetchData extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         try {
-            URL url = new URL("https://api.betterdoctor.com/2016-03-01/doctors?specialty_uid=psychiatrist&location=ca&gender=female&skip=0&user_key=7a728d1907e7e9fd24f301e36a806c34");
+            URL url = new URL("https://api.betterdoctor.com/2016-03-01/doctors?specialty_uid=psychiatrist&limit=100&location=ca&gender=female&skip=0&user_key=7a728d1907e7e9fd24f301e36a806c34");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             InputStream is = conn.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -42,14 +42,16 @@ public class FetchData extends AsyncTask<Void, Void, Void> {
         } catch (IOException e){
             e.printStackTrace();
         }
+
+        Gson gson = new Gson();
+        SwipeyActivity.data = gson.fromJson(this.data, DataObject.class);
+
         return null;
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        Gson gson = new Gson();
-        SwipeyActivity.data = gson.fromJson(this.data, DataObject.class);
 
         activity.startActivity(new Intent(activity, SwipeyActivity.class));
     }

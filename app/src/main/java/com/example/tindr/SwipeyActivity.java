@@ -111,5 +111,6 @@ public class SwipeyActivity extends AppCompatActivity {
         }
 
         textView.setText(firstName);
+
     }
 }
