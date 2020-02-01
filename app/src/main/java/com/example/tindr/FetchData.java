@@ -26,7 +26,7 @@ public class FetchData extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         try {
-            URL url = new URL("https://api.betterdoctor.com/2016-03-01/doctors?specialty_uid=psychiatrist&location=ca&gender=female&skip=0&limit=10&user_key=7a728d1907e7e9fd24f301e36a806c34");
+            URL url = new URL("https://api.betterdoctor.com/2016-03-01/doctors?specialty_uid=psychiatrist&location=ca&gender=female&skip=0&user_key=7a728d1907e7e9fd24f301e36a806c34");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             InputStream is = conn.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
