@@ -79,8 +79,7 @@ public class SwipeyActivity extends AppCompatActivity {
 
     private void loadNextDr(){
         if(count >= data.getData().length){
-            Toast.makeText(getApplicationContext(), "Sorry, no more doctors available", Toast.LENGTH_LONG).show();
-            return;
+            count = 0;
         }
 
         Profile profile = data.getData()[count].getProfile();

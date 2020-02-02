@@ -3,56 +3,53 @@ package com.example.tindr;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.jsoup.Connection;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+
 
 public class FetchData extends AsyncTask<Void, Void, Void> {
 
     private String data = "";
     private Activity activity;
+    String title;
+    Button butt;
 
-    public FetchData(Activity act){
+    public FetchData(Activity act, Button b){
         activity = act;
+        butt = b;
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
+        title = "STIPID";
         try {
-            URL url = new URL("https://api.betterdoctor.com/2016-03-01/doctors?specialty_uid=psychiatrist&limit=100&location=ca&gender=female&skip=0&user_key=7a728d1907e7e9fd24f301e36a806c34");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            InputStream is = conn.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-            String line = "";
-            while(line != null){
-                line = br.readLine();
-                data += line;
-            }
-            data = data.substring(0, data.length()-4);
-        } catch (MalformedURLException e){
-            e.printStackTrace();
-        } catch (IOException e){
+            Document doc = Jsoup.connect("https://www.psychologytoday.com/us/therapists/sara-abadie-los-angeles-ca/462562").get();
+            title = doc.title();
+        } catch(IOException e){
             e.printStackTrace();
         }
 
-        Gson gson = new Gson();
-        SwipeyActivity.data = gson.fromJson(this.data, DataObject.class);
+        /*Gson gson = new Gson();
+        SwipeyActivity.data = gson.fromJson(this.data, DataObject.class);*/
 
         return null;
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+        butt.setText(title);
 
+        super.onPostExecute(aVoid);
         activity.startActivity(new Intent(activity, SwipeyActivity.class));
     }
 }
